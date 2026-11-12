@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Models\Tag; 
 
 class Product extends Model
 {
@@ -33,4 +34,14 @@ class Product extends Model
         $this->refresh();
         return $decreased > 0;
     }
+    public function tags()
+    {
+        return $this->belongsToMany(
+            Tags::class,
+            'product_tag',
+            'product_id',
+            'tag_id'
+        );
+    }
+
 }
