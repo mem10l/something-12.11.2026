@@ -151,6 +151,14 @@ form input[type="submit"]:hover {
     cursor: pointer;
 }
 
+.btn-increase {
+    background-color: #555;
+}
+
+.btn-decrease {
+    background-color: #555;
+}
+
 /* Status & Error Messages */
 .status-message, .error-message {
     padding: 15px;

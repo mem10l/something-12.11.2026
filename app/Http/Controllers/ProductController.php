@@ -51,26 +51,37 @@ class ProductController extends Controller
             'quantity' => 'required|integer',
             'description' => 'required',
         ]);
-
         $product->update($validated);
         return redirect()
                 ->route('products/show', [$product])
                 ->with('message', "Product updated successfully");
     }
 
+    public function increaseQuantity(Request $request, Product $product) {
+        $validated = $request->validate([
+            'amount' => 'sometimes|integer|min:1',
+        ]);
+        
+        $product->increaseQuantity($validated['amount'] ?? 1);
+        return response()->json([
+            'quantity' => $product->quantity,
+        ]);
+    }
+
     public function decreaseQuantity(Request $request, Product $product) {
-        $request->validate([
-            'amount' => 'required|integer|min:1',
+        
+        $validated = $request->validate([
+            'amount' => 'sometimes|integer|min:1',
         ]);
 
-        if ($product->decreaseQuantity($request->amount)) {
-            return redirect()
-                    ->route('products/show', [$product])
-                    ->with('message', "Product quantity decreased successfully");
-        } else {
-            return redirect()
-                    ->route('products/show', [$product])
-                    ->withErrors(['amount' => 'Not enough stock to decrease quantity.']);
+        if (! $product->decreaseQuantity($validated['amount'] ?? 1)) {
+            return response()->json([
+                'quantity' => $product->quantity,
+            ]);
         }
+
+        return response()->json([
+            'quantity' => $product->quantity,
+        ]);
     }
 }

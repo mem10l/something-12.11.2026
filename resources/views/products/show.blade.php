@@ -14,7 +14,18 @@
     @endif
 
     <h1>{{ $product->name }}</h1>
-    <h4>Quantity: {{ $product->quantity }}</h4>
+    <h4>Quantity:<span data-product-quantity>{{ $product->quantity }}</span></h4>
+
+    <div
+        class="quantity-controls"
+        data-quantity-controls
+        data-increase-url="{{ route('products/increaseQuantity', [$product]) }}"
+        data-decrease-url="{{ route('products/decreaseQuantity', [$product]) }}"
+    >
+        <button type="button" class="btn btn-decrease" data-quantity-action="decrease" >-</button>
+        <button type="button" class="btn btn-increase" data-quantity-action="increase">+</button>
+    </div>
+
     <p>{{ $product->description }}</p>
 
     <a href="{{ route('products/edit', [$product]) }}">Edit</a>
